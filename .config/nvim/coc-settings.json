@@ -1,0 +1,41 @@
+{
+    "inlayHint.enable": false,
+    "languageserver": {
+        "ccls": {
+            "enable": false,
+            "command": "ccls",
+            "args": ["--log-file=/tmp/ccls.log"],
+            "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+            "rootPatterns": [".ccls", "compile_commands.json"],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls-cache",
+                    "hierarchicalPath": true
+                },
+                "highlight": {
+                    "lsRanges": true
+                },
+                "clang": {
+                    "extraArgs": [
+                    ]
+                }
+            }
+        },
+        "clangd": {
+            "enable": true,
+            "command": "clangd",
+            "args": ["--completion-style=detailed", "--hidden-features", "--clang-tidy"],
+            "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
+            "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"]
+        }
+    },
+    "rust-analyzer.serverPath": "~/.local/bin/rust-analyzer",
+    "python.pythonPath": "python3",
+    "pyright.disableDiagnostics": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportGeneralTypeIssues": "none"
+    },
+    "diagnostic": {
+        "warningSign": "--"
+    }
+}
