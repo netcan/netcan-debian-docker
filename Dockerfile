@@ -60,25 +60,25 @@ RUN echo "netcan ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/netcan && chmod 04
 USER netcan
 WORKDIR $HOME
 
+# tmux
+RUN git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
+COPY --chown=netcan .tmux.conf $HOME/
+
 # autojump
 RUN sudo apt-get install -y autojump && echo ". /usr/share/autojump/autojump.sh" >> ~/.bashrc
 
 # fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && yes y | ~/.fzf/install
 
-# tmux
-RUN git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
-COPY --chown=netcan .tmux.conf $HOME/
-
 # vim
-RUN sudo apt-get install -y nodejs npm && npm config set registry https://registry.npmmirror.com
+RUN sudo apt-get install -y nodejs npm ripgrep && npm config set registry https://registry.npmmirror.com
 RUN sudo npm install -g neovim
 COPY --chown=netcan .config $HOME/.config
 RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' && vim +PlugInstall +qall
 
 # proxychains
-RUN sudo sed -i '/^socks/s/.*/socks5 192.168.50.1 1080/g' /etc/proxychains4.conf
+RUN sudo sed -i '/^socks/s/.*/socks5 192.168.2.1 1080/g' /etc/proxychains4.conf
 
 # cleanup
 RUN sudo apt-get autoremove -y && sudo apt-get clean
