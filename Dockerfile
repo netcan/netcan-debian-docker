@@ -10,9 +10,11 @@ COPY sources.list /etc/apt/sources.list
 RUN apt-get update && apt-get upgrade -y
 
 # system tools
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
     openssh-server sudo locales \
-    tmux proxychains4 net-tools bash-completion iputils-ping
+    tmux proxychains4 net-tools bash-completion iputils-ping dnsutils traceroute \
+    netcat-traditional telnet nmap man
 
 RUN (sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen) && locale-gen
 ENV LANG=en_US.UTF-8
@@ -48,6 +50,7 @@ RUN apt-get install -y \
     make \
     patch \
     rsync \
+    ripgrep \
     unzip \
     zlib1g-dev \
     wget
@@ -70,8 +73,11 @@ RUN sudo apt-get install -y autojump && echo ". /usr/share/autojump/autojump.sh"
 # fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && yes y | ~/.fzf/install
 
+# node
+RUN curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
+    sudo apt-get install -y nodejs
+
 # vim
-RUN sudo apt-get install -y nodejs npm ripgrep && npm config set registry https://registry.npmmirror.com
 RUN sudo npm install -g neovim
 COPY --chown=netcan .config $HOME/.config
 RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
