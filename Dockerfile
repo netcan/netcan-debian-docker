@@ -1,6 +1,6 @@
 # ARCH= && docker build -t netcan/debian${ARCH:+:$ARCH} --build-arg ARCH=${ARCH:+$ARCH/} .
 ARG ARCH=
-FROM ${ARCH}debian:testing
+FROM ${ARCH}debian:unstable
 
 RUN apt-get update && \
     apt-get install -y apt-transport-https ca-certificates
@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get install -y \
     openssh-server sudo locales \
     tmux proxychains4 net-tools bash-completion iputils-ping dnsutils traceroute \
-    netcat-traditional telnet nmap man
+    netcat-traditional telnet nmap man fdisk
 
 RUN (sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen) && locale-gen
 ENV LANG=en_US.UTF-8
@@ -22,18 +22,24 @@ ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
 # vim
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
     neovim \
-    python2 \
+    python-is-python3 \
+    python3-pip \
     python3-distutils \
     python3-neovim
 
+RUN pip install jedi
+
 # dev tools
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
     bc \
     build-essential \
     bzip2 \
     clang \
+    clangd \
     cpio \
     curl \
     file \
@@ -53,7 +59,10 @@ RUN apt-get install -y \
     ripgrep \
     unzip \
     zlib1g-dev \
-    wget
+    wget \
+    cmake \
+    ninja-build \
+    libcurl4-openssl-dev
 
 # add netcan workdir
 ENV HOME=/home/netcan
