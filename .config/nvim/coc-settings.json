@@ -27,6 +27,16 @@
             "args": ["--completion-style=detailed", "--hidden-features", "--clang-tidy"],
             "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
             "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"]
+        },
+        "cmake": {
+            "command": "cmake-language-server",
+            "filetypes": ["cmake"],
+            "rootPatterns": [
+                "build/"
+            ],
+            "initializationOptions": {
+                "buildDirectory": "build"
+            }
         }
     },
     "rust-analyzer.serverPath": "~/.local/bin/rust-analyzer",

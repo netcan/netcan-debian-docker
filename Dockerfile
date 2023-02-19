@@ -30,8 +30,6 @@ RUN apt-get update && \
     python3-distutils \
     python3-neovim
 
-RUN pip install jedi
-
 # dev tools
 RUN apt-get update && \
     apt-get install -y \
@@ -47,6 +45,9 @@ RUN apt-get update && \
     g++ \
     gawk \
     gcc \
+    gdb \
+    lldb \
+    valgrind \
     gettext \
     git \
     htop \
@@ -62,6 +63,7 @@ RUN apt-get update && \
     wget \
     cmake \
     ninja-build \
+    linux-perf \
     libcurl4-openssl-dev
 
 # add netcan workdir
@@ -71,6 +73,7 @@ RUN echo "netcan ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/netcan && chmod 04
 
 USER netcan
 WORKDIR $HOME
+RUN pip install --break-system-packages --user jedi cmake-language-server
 
 # tmux
 RUN git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
