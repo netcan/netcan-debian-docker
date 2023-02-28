@@ -14,7 +14,8 @@ RUN apt-get update && \
     apt-get install -y \
     openssh-server sudo locales \
     tmux proxychains4 net-tools bash-completion iputils-ping dnsutils traceroute \
-    netcat-traditional telnet nmap man fdisk
+    netcat-traditional telnet nmap man fdisk \ 
+    lsb-release wget software-properties-common gpg lz4
 
 RUN (sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen) && locale-gen
 ENV LANG=en_US.UTF-8
@@ -36,8 +37,6 @@ RUN apt-get update && \
     bc \
     build-essential \
     bzip2 \
-    clang \
-    clangd \
     cpio \
     curl \
     file \
@@ -46,7 +45,6 @@ RUN apt-get update && \
     gawk \
     gcc \
     gdb \
-    lldb \
     valgrind \
     gettext \
     git \
@@ -60,11 +58,19 @@ RUN apt-get update && \
     ripgrep \
     unzip \
     zlib1g-dev \
-    wget \
     cmake \
     ninja-build \
     linux-perf \
     libcurl4-openssl-dev
+
+# llvm
+RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+RUN add-apt-repository 'deb http://apt.llvm.org/unstable/ llvm-toolchain main'
+RUN apt-get update && \
+    apt-get install -y \
+    clang-format clang-tidy clang-tools clang clangd libc++-dev libc++1\
+    libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev\
+    libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python3-clang
 
 # add netcan workdir
 ENV HOME=/home/netcan
