@@ -1,6 +1,7 @@
 # ARCH= && docker build -t netcan/debian${ARCH:+:$ARCH} --build-arg ARCH=${ARCH:+$ARCH/} .
 ARG ARCH=
 FROM ${ARCH}debian:unstable
+ENV TZ="Asia/Shanghai"
 
 RUN apt-get update && \
     apt-get install -y apt-transport-https ca-certificates
