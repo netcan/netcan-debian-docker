@@ -71,7 +71,12 @@ RUN apt-get update && \
     apt-get install -y \
     clang-format clang-tidy clang-tools clang clangd libc++-dev libc++1\
     libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev\
-    libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python3-clang
+    libomp-dev libomp5 lld llvm-dev llvm-runtime llvm python3-clang
+
+# node
+RUN wget -O - https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo apt-key add -
+RUN add-apt-repository 'deb https://deb.nodesource.com/node_21.x nodistro main'
+RUN apt-get install -y nodejs
 
 # add netcan workdir
 ENV HOME=/home/netcan
@@ -92,18 +97,14 @@ RUN sudo apt-get install -y autojump && echo ". /usr/share/autojump/autojump.sh"
 # fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && yes y | ~/.fzf/install
 
-# node
-RUN curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
-    sudo apt-get install -y nodejs
-
 # vim
 RUN sudo npm install -g neovim
 COPY --chown=netcan .config $HOME/.config
-RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' && vim +PlugInstall +qall
+RUN curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
+    vim +PlugInstall +qall
 
 # proxychains
-RUN sudo sed -i '/^socks/s/.*/socks5 192.168.2.1 1080/g' /etc/proxychains4.conf
+RUN sudo sed -i '/^socks/s/.*/socks5 192.168.124.7 1080/g' /etc/proxychains4.conf
 
 # cleanup
 RUN sudo apt-get autoremove -y && sudo apt-get clean
