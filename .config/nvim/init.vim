@@ -60,6 +60,8 @@ Plug 'AndrewRadev/linediff.vim'
 
 Plug 'pangloss/vim-javascript'
 
+Plug 'powerman/vim-plugin-AnsiEsc'
+
 call plug#end()
 
 " general {

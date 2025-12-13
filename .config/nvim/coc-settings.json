@@ -39,7 +39,7 @@
             }
         }
     },
-    "rust-analyzer.serverPath": "~/.local/bin/rust-analyzer",
+    "rust-analyzer.serverPath": "rust-analyzer",
     "python.pythonPath": "python3",
     "pyright.disableDiagnostics": true,
     "python.analysis.diagnosticSeverityOverrides": {
@@ -47,5 +47,6 @@
     },
     "diagnostic": {
         "warningSign": "--"
-    }
+    },
+    "snippets.ultisnips.pythonPrompt": false
 }
