@@ -62,7 +62,10 @@ RUN apt-get update && \
     cmake \
     ninja-build \
     linux-perf \
-    libcurl4-openssl-dev
+    libcurl4-openssl-dev \
+    pkg-config \
+    musl-tools \
+    libssl-dev
 
 # llvm
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
@@ -86,6 +89,10 @@ RUN echo "netcan ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/netcan && chmod 04
 USER netcan
 WORKDIR $HOME
 RUN pip install --break-system-packages --user jedi cmake-language-server
+
+# rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+RUN rustup target add x86_64-unknown-linux-musl
 
 # tmux
 RUN git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
